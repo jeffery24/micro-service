@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--
+              targetRuntime: 执行生成的逆向工程的版本
+                      MyBatis3Simple: 生成基本的CRUD
+                      MyBatis3: 生成带条件的CRUD
+    MyBatis3DynamicSql:
+    这是默认值
+    生成Java代码
+    不生成XML-MyBatis3批注仅用于
+    生成的模型对象是“平面”的-没有单独的主键对象
+    生成的代码取决于MyBatis动态SQL库。
+    生成的代码量相对较小
+    生成的代码为查询构造提供了极大的灵活性
+    -->
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <!-- 不生成注释 -->
+        <commentGenerator>
+            <!-- 是否去除自动生成的注释 -->
+            <property name="suppressAllComments" value="true"/>
+            <!-- 生成注释是否带时间戳-->
+            <property name="suppressDate" value="true"/>
+
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://47.107.54.10:3306/foodie-shop-dev?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;useSSL=false"
+                        userId="root"
+                        password="root_123456">
+        </jdbcConnection>
+
+        <!--        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>-->
+
+
+        <!-- javaBean的生成策略 -->
+        <javaModelGenerator targetPackage="org.jeff.domain" targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- SQL映射文件的生成策略 -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src\main\resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- Mapper接口的生成策略 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="org.jeff.mapper" targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- 逆向分析的表 -->
+        <table tableName="carousel" domainObjectName="Carousel"/>
+
+    </context>
+</generatorConfiguration>
