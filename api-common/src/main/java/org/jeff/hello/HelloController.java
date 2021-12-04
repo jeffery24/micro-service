@@ -2,7 +2,6 @@ package org.jeff.hello;
 
 import org.jeff.common.ServerResponse;
 import org.jeff.enums.ResponseCodeEnum;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,12 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/hello")
 public class HelloController {
 
-    @Value(value = "${hello.name}")
-    private String name;
-
     @GetMapping("/hi")
     public String hello() {
-        return "hello micro service: what's your name " + name;
+        return "hello micro service: what's your name " ;
     }
 
     @GetMapping("/success")
