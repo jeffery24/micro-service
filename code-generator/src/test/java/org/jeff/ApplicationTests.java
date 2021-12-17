@@ -19,7 +19,8 @@ public class ApplicationTests {
     public void contextLoads() throws Exception {
         List<String> warnings = new ArrayList<String>();
         boolean overwrite = true;
-        File configFile = new File("D:\\Project\\personal\\common-micro-service\\code-generator\\src\\main\\resources\\generator\\generator-config.xml");
+        File configFile = new File("src\\main\\resources\\generator\\generator-config.xml");
+        //File configFile = new File("D:\\Project\\personal\\micro-service\\code-generator\\src\\main\\resources\\generator\\generator-config.xml");
         ConfigurationParser cp = new ConfigurationParser(warnings);
         Configuration config = cp.parseConfiguration(configFile);
         DefaultShellCallback callback = new DefaultShellCallback(overwrite);
