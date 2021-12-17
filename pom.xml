@@ -12,6 +12,7 @@
         <module>api-common</module>
         <module>util</module>
         <module>code-generator</module>
+        <module>code-generator-mapper</module>
     </modules>
 
     <properties>

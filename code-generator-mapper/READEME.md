@@ -1,0 +1,4 @@
+通用mapper的代码生成器,生成基础的实体对象、Mapper、XML(ResultMap)
+特点说明:此模块在IDEA中打开需要单独打开,不要在聚合模块中打开,可能会导致无法生成
+generatorConfig.xml 配置需要生成的表
+GeneratorDisplay 执行生成器
