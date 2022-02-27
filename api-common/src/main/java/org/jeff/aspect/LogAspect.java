@@ -19,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Map;
 
 /**
  * 日志切面-统一请求参数打印;统一响应模型数据打印
@@ -35,7 +37,7 @@ public class LogAspect {
     /**
      * 定义一个Controller切点
      */
-    @Pointcut(value = "execution(public * org.jeff.controller..*Controller.*(..))")
+    @Pointcut(value = "execution(public * org.jeff.*.controller..*Controller.*(..))")
     public void controllerPointcut() {
     }
 
@@ -65,6 +67,12 @@ public class LogAspect {
             }
             arguments[i] = args[i];
         }
+
+        Map<String, String[]> maps = request.getParameterMap();
+        for (Map.Entry<String, String[]> entry : maps.entrySet()) {
+            LOG.info("request parameter: " +entry.getKey() + ":" + Arrays.toString(entry.getValue()) + ";");
+        }
+
         // 排除字段，敏感字段或太长的字段不显示
         String[] excludeProperties = {"password", "file"};
         PropertyPreFilters filters = new PropertyPreFilters();
