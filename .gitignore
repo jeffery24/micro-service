@@ -4,6 +4,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### Custom ###
+ignore-dir/
+
+
 # Compiled class file
 *.class
 
