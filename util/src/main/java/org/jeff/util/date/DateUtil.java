@@ -82,6 +82,11 @@ public class DateUtil {
         return calendar.getTime();
     }
 
+    public static LocalDate addDay(int days) {
+        return LocalDate.now().plusDays(days);
+    }
+
+
     /**
      * 判断给定的日期是否在指定的时间段内
      *
