@@ -21,6 +21,9 @@ import java.util.Date;
  * 本地日期、本地时间、本地日期时间的使用：LocalDate / LocalTime / LocalDateTime
  * 分别表示使用 ISO-8601日历系统的日期、时间、日期和时间。它们提供了简单的本地日期或时间，并不包含当前的时间信息，也不包含与时区相关的信息。
  * LocalDateTime相较于LocalDate、LocalTime，使用频率要高,类似于Calendar
+ * <p>
+ * 时间量或两个日期之间的差使用：Period、Duration
+ * Period基于日期值，而Duration基于时间值
  *
  * @author jeff
  * @since 1.0.0
@@ -82,6 +85,12 @@ public class DateUtil {
         return calendar.getTime();
     }
 
+    /**
+     * 增加天数
+     *
+     * @param days
+     * @return
+     */
     public static LocalDate addDay(int days) {
         return LocalDate.now().plusDays(days);
     }
@@ -111,6 +120,25 @@ public class DateUtil {
         }
     }
 
+    /**
+     * 判断给定的日期是否在指定的时间段内
+     *
+     * @param dateTime  当前时间
+     * @param beginTime 开始时间
+     * @param endTime   结束时间
+     * @return true Or false
+     */
+    public static boolean belongCalendar(LocalDateTime dateTime, LocalDateTime beginTime, LocalDateTime endTime) {
+
+        if (dateTime.isAfter(beginTime) && dateTime.isBefore(endTime)) {
+            return true;
+        } else if (dateTime.compareTo(beginTime) == 0 || dateTime.compareTo(endTime) == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     /**
      * Date convert LocalDateTime
@@ -118,7 +146,7 @@ public class DateUtil {
      * @param date
      * @return
      */
-    public static LocalDateTime date2LocalDateTime(Date date) {
+    public static LocalDateTime convertToLocalDateTime(Date date) {
         return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 
@@ -128,98 +156,84 @@ public class DateUtil {
      * @param date
      * @return
      */
-    public static Date localDateTime2Date(LocalDateTime date) {
+    public static Date convertToDate(LocalDateTime date) {
         return Date.from(date.atZone(ZoneId.systemDefault()).toInstant());
     }
 
-
-    public static LocalDate date2LocalDate(Date date) {
+    /**
+     * Date convert LocalDate
+     *
+     * @param date
+     * @return
+     */
+    public static LocalDate convertToLocalDate(Date date) {
         return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    /**
+     * LocalDate convert Date
+     *
+     * @param localDate
+     * @return
+     */
+    public static Date convertToDate(LocalDate localDate) {
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+
+    /**
+     * convert to LocalTime
+     *
+     * @param date
+     * @return
+     */
+    public static LocalTime convertToLocalTime(Date date) {
+        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()).toLocalTime();
     }
 
     /**
      * 获取年|月|日的间隔天数 eg: 2018-7-23 2021-8-25
      * getDays() 获取天数 2
-     * period.getMonths() 获取月数 1
-     * period.getYears() 获取年数 3
+     * getMonths() 获取月数 1
+     * getYears() 获取年数 3
      *
      * @param startDate
      * @param endDate
      * @return
      */
-    public static long betweenDays(Date startDate, Date endDate) {
-        Period period = Period.between(date2LocalDate(startDate), date2LocalDate(endDate));
-        return period.getDays();
+    public static Period between(Date startDate, Date endDate) {
+        return Period.between(convertToLocalDate(startDate), convertToLocalDate(endDate));
     }
 
-    public static long betweenDays(LocalDate startDate, LocalDate endDate) {
-        Period period = Period.between(startDate, endDate);
-        return period.getDays();
+    /**
+     * 获取年|月|日的间隔天数 eg: 2018-7-23 2021-8-25
+     * getDays() 获取天数 2
+     * getMonths() 获取月数 1
+     * getYears() 获取年数 3
+     *
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public static Period between(LocalDate startDate, LocalDate endDate) {
+        return Period.between(startDate, endDate);
     }
 
-    public static long betweenDateDays(LocalDateTime startDate, LocalDateTime endDate) {
-        Duration duration1 = Duration.between(startDate, endDate);
-        return duration1.toDays();
-    }
-
-    public static long betweenMinutes(LocalDateTime startDate, LocalDateTime endDate) {
-        Duration duration1 = Duration.between(startDate, endDate);
-        return duration1.toMinutes();
-    }
-
-    public static long betweenHours(LocalDateTime startDate, LocalDateTime endDate) {
-        Duration duration1 = Duration.between(startDate, endDate);
-        return duration1.toHours();
+    /**
+     * 获取年|月|日的间隔天数 eg: 2021-7-23 10:23:34 2021-8-25 11:23:34
+     * toMinutes() 相差的分钟数
+     * toHours() 相差的小时数
+     * toDays() 相差的天数
+     *
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public static Duration between(LocalDateTime startDate, LocalDateTime endDate) {
+        return Duration.between(startDate, endDate);
     }
 
 
     public static void main(String[] args) {
-        //LocalTime localTime = LocalTime.now();
-        //LocalTime localTime1 = LocalTime.of(15, 23, 32);
-        ////between():静态方法，返回Duration对象，表示两个时间的间隔
-        //Duration duration = Duration.between(localTime1, localTime);
-        //System.out.println(duration);
-        //
-        //System.out.println(duration.getSeconds());
-        //System.out.println(duration.getNano());
-
-        //LocalDateTime localDateTime = LocalDateTime.of(2016, 6, 12, 15, 23, 32);
-        //LocalDateTime localDateTime1 = LocalDateTime.of(2017, 6, 12, 15, 23, 32);
-        //
-        //Duration duration1 = Duration.between(localDateTime1, localDateTime);
-        //System.out.println(duration1.toDays());
-        //
-        //System.out.println("=================");
-        //long betweenDays = betweenDays(LocalDate.of(2018, 9, 17), LocalDate.now());
-        //System.out.println(betweenDays);
-        //System.out.println("=================");
-        //long dateDays = betweenDateDays(LocalDate.of(2018, 9, 17), LocalDate.now());
-        //System.out.println(dateDays);
-        //日期间隔：Period --用于计算两个“日期”间隔，以年、月、日衡量
-
-        LocalTime localTime = LocalTime.now();
-        LocalTime localTime1 = LocalTime.of(15, 23, 32);
-        //between():静态方法，返回Duration对象，表示两个时间的间隔
-        Duration duration = Duration.between(localTime1, localTime);
-        System.out.println(duration);
-
-        System.out.println(duration.getSeconds());
-        System.out.println(duration.getNano());
-
-        LocalDateTime localDateTime = LocalDateTime.of(2016, 6, 12, 15, 23, 32);
-        LocalDateTime localDateTime1 = LocalDateTime.of(2017, 6, 12, 15, 23, 32);
-
-        Duration duration1 = Duration.between(localDateTime1, localDateTime);
-        System.out.println("====================");
-        System.out.println(LocalDate.now());
-        Duration between = Duration.between(LocalDateTime.of(2018, 9, 17, 12, 3, 4), LocalDateTime.now());
-        System.out.println(between.toDays());
-        System.out.println(between.toHours());
-        System.out.println(between);
-        //System.out.println(duration1.toDays());
-
-        //Period period1 = period.withYears(2);
-        //System.out.println(period1);
 
     }
 
